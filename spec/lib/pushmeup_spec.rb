@@ -3,7 +3,7 @@ require 'spec_helper'
 describe Pushmeup do
   describe "APNS" do
     it "should have a APNS object" do
-      defined?(APNS).should_not be_false
+      defined?(APNS).should_not be_nil
     end
 
     it "should not forget the APNS default parameters" do
@@ -22,6 +22,11 @@ describe Pushmeup do
           b = APNS::Notification.new("123", {:alert => "hi"})
           a.should eq(b)
         end
+        it "should add content-available to data" do
+           a = APNS::Notification.new("123", {:alert => "hi", :"content-available" => 1})
+ 
+           a.packaged_message.should == '{"aps":{"alert":"hi","content-available":1}}'
+         end
 
       end
 
@@ -31,7 +36,7 @@ describe Pushmeup do
 
   describe "GCM" do
     it "should have a GCM object" do
-      defined?(GCM).should_not be_false
+      defined?(GCM).should_not be_nil
     end
 
     describe "Notifications" do
